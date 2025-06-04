@@ -1,6 +1,7 @@
+#include <iostream>
 #include "muduo_logger.h"
 
-Logger& Logger::instance()
+Logger& Logger::getInstance()
 {
     static Logger logger;
     return logger;
