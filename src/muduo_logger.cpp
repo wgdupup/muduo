@@ -1,5 +1,6 @@
 #include <iostream>
 #include "muduo_logger.h"
+#include "muduo_timestamp.h"
 
 Logger& Logger::getInstance()
 {
@@ -31,4 +32,6 @@ void Logger::write(std::string msg)
         default:
             break;
     }
+
+    std::cout << Timestamp::now().toString() << ":" << msg <<std::endl;
 }
