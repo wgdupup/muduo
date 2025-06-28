@@ -1,4 +1,5 @@
 #include "muduo_poller.h"
+#include "muduo_epollpoller.h"
 
 #include <stdlib.h>
 
@@ -10,6 +11,6 @@ Poller* Poller::newDefaultPoller(EventLoop* loop)
     }
     else
     {
-        return nullptr;
+        return new EpollPoller(loop);
     }
 }

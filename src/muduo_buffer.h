@@ -62,6 +62,13 @@ public:
         return retrieveAsString(readableBytes());
     }
 
+    std::string retrieveAsString(size_t len)
+    {
+        std::string result(peek(), len);
+        retrieve(len);
+        return result;
+    }
+
     void ensureWriteableBytes(size_t len)
     {
         if(writeableBytes() < len)
@@ -70,12 +77,25 @@ public:
         }
     }
 
-    std::string retrieveAsString(size_t len)
+    void append(const char* data, size_t len)
     {
-        std::string result(peek(), len);
-        retrieve(len);
-        return result;
+        ensureWriteableBytes(len);
+        std::copy(data, data + len, beginWrite());
+        writerIndex_ += len;
     }
+
+    char* beginWrite()
+    {
+        return begin() + writerIndex_;
+    }
+
+    const char* beginWrite() const 
+    {
+        return begin() + writerIndex_;
+    }
+
+    ssize_t readFd(int fd, int* saveErrno);
+    ssize_t writeFd(int fd, int* saveErrno);
 private:
     const char* begin() const
     {

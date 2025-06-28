@@ -56,7 +56,7 @@ private:
     std::atomic_int started_;
 
     int nextConnId_;
-    ConnectionMap connectionMap_;
+    ConnectionMap connections_;
 };
 
 #endif

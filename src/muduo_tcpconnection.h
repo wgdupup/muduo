@@ -28,7 +28,7 @@ public:
     const InetAddress& peerAddress() const { return peerAddr_; }
 
     bool connected() const { return state_ == kConnected; }
-    void send(const void* message, int len);
+    void send(const std::string& buf);
     void shutdown();
 
     void setConnectionCallback(const ConnectionCallback& cb)
@@ -51,15 +51,23 @@ public:
         highWaterMarkCallback_ = cb;
     }
 
+    void setCloseCallback(const CloseCallback& cb)
+    { 
+        closeCallback_ = cb; 
+    }
+
     void connectEstablished();
     void connectDestroyed();
+
 private:
     enum StateE {kDisconnected, kConnecting, kConnected, kDisconnecting};
+    void setState(StateE state) { state_ = state; }
     void handleRead(Timestamp receiveTime);
     void handleWrite();
     void handleClose();
     void handleError();
 
+    
     void sendInLoop(const void* message, size_t len);
     void shutdownInLoop();
 

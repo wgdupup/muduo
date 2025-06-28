@@ -7,7 +7,7 @@
 #include "muduo_noncopyable.h"
 #include "muduo_timestamp.h"
 
-class EvenLoop;
+class EventLoop;
 
 //channel通信通道，封装了sockfd和注册的event，记录了poller返回的具体事件
 class Channel: noncopyable
@@ -16,7 +16,7 @@ public:
     using EventCallback = std::function<void()>;
     using ReadEventCallback = std::function<void(Timestamp)>;
 
-    Channel(EvenLoop *loop, int fd);
+    Channel(EventLoop *loop, int fd);
     ~Channel();
 
     void handleEvent(Timestamp receiveTimestamp);
@@ -60,7 +60,7 @@ public:
     int index() {return index_; }
     void set_index(int idx) { index_ = idx; }
 
-    EvenLoop* ownerLoop() { return loop_; }
+    EventLoop* ownerLoop() { return loop_; }
     void remove();
 private:
     void update();
@@ -70,7 +70,7 @@ private:
     static const int kReadEvent;
     static const int kWriteEvent;
 
-    EvenLoop* loop_; //事件循环
+    EventLoop* loop_; //事件循环
     const int fd_; //poller监听对象
     int events_; //监听的事件
     int revents_;//poller返回的具体发生的事件
