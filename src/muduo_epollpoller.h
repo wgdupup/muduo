@@ -17,12 +17,13 @@ public:
     void removeChannel(Channel* channel) override;
 private:
     static const int kInitEventListSize = 16;
-
+    /*填写活跃的连接*/
     void fillActiveChannels(int numEvents, ChannelList* activeChannels) const;
+    /*更新channel对应的事件*/
     void update(int operation, Channel* channel);
     using EventList = std::vector<epoll_event>;
 
-    int epollfd_;
-    EventList events_;
+    int epollfd_;/*epoll对应的fd*/
+    EventList events_;/*当前发生的事件*/
 };
 #endif

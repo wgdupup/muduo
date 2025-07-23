@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <string>
 
+/*网络地址类*/
 class InetAddress
 {
 public:

@@ -54,6 +54,7 @@ enum LogLevel
     DEBUG,
 };
 
+/*单例模式实现日志*/
 class Logger : noncopyable
 {
 public:

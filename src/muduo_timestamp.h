@@ -4,6 +4,7 @@
 #include<iostream>
 #include<string>
 
+/*事件类*/
 class Timestamp
 {
 public:

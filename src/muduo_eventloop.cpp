@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <memory>
 
+/*线程局部变量*/
 __thread EventLoop* t_loopInThisThread = nullptr;
 
 const int kPollTimeMs = 10000;
@@ -53,6 +54,7 @@ EventLoop::~EventLoop()
     t_loopInThisThread = nullptr;
 }
 
+/*开启事件循环*/
 void EventLoop::loop()
 {
     looping_ = true;
@@ -75,6 +77,10 @@ void EventLoop::loop()
     looping_ = false;
 }
 
+/*
+如果是eventloop所在线程调用quit，那么只会置quit
+否则需要唤醒另外一个eventloop，这样才能让其在loop循环中退出
+*/
 void EventLoop::quit()
 {
     quit_ = true;
@@ -84,18 +90,20 @@ void EventLoop::quit()
     }
 }
 
+/*eventloop执行回调*/
 void EventLoop::runInLoop(Functor cb)
 {
-    if(isInLoopThread())
+    if(isInLoopThread())/*在当前的loop线程中，执行cb*/
     {
         cb();
     }
     else
     {
-        queueInLoop(cb);
+        queueInLoop(cb);/*在非当前loop线程中执行cb，就需要唤醒loop所在线程，执行cb*/
     }
 }
 
+/*把cb放入队列中，唤醒loop所在的线程，执行cb*/
 void EventLoop::queueInLoop(Functor cb)
 {
     {
@@ -103,6 +111,7 @@ void EventLoop::queueInLoop(Functor cb)
         pendingFunctors_.emplace_back(cb);
     }
 
+    /*唤醒对应的线程执行回调函数，callingPendingFunctors_考虑的是对应线程正在执行回调函数，需要再次唤醒*/
     if(!isInLoopThread() || callingPendingFunctors_)
     {
         wakeup();
@@ -134,6 +143,7 @@ void EventLoop::updateChannel(Channel* channel)
     poller_->updateChannel(channel);
 }
 
+/*唤醒loop所在的线程*/
 void EventLoop::wakeup()
 {
     uint64_t one = 1;
@@ -156,7 +166,7 @@ void EventLoop::doPendingFunctors()
 
     for(const Functor& functor : functors)
     {
-        functor;
+        functor;/*执行当前loop需要执行的回调操作*/
     }
 
     callingPendingFunctors_ = false;

@@ -7,6 +7,8 @@
 #include "muduo_inetaddress.h"
 #include "muduo_event_loop_thread_pool.h"
 #include "muduo_callback.h"
+#include "muduo_buffer.h"
+#include "muduo_tcpconnection.h"
 
 #include <functional>
 #include <string>

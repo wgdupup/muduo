@@ -19,6 +19,7 @@ EventLoopThreadPool::~EventLoopThreadPool()
 
 }
 
+/*启动所有eventloop*/
 void EventLoopThreadPool::start(const ThreadInitCallback& cb)
 {
     started_ = true;
@@ -38,6 +39,7 @@ void EventLoopThreadPool::start(const ThreadInitCallback& cb)
     }
 }
 
+/*轮询方式获取下一个loop*/
 EventLoop* EventLoopThreadPool::getNextLoop()
 {
     EventLoop* loop = baseLoop_;
@@ -55,6 +57,7 @@ EventLoop* EventLoopThreadPool::getNextLoop()
     return loop;
 }
 
+/*返回所有的loop*/
 std::vector<EventLoop*> EventLoopThreadPool::getAllLoops()
 {
     if(loops_.empty())

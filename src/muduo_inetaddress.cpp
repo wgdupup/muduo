@@ -2,6 +2,7 @@
 
 #include <string.h>
 
+/*初始化ip地址和端口*/
 InetAddress::InetAddress(uint16_t port, std::string ip)
 {
     bzero(&addr_, sizeof(addr_));

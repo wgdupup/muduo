@@ -21,6 +21,7 @@ EventLoopThread::~EventLoopThread()
     }
 }
 
+/*开启事件循环*/
 EventLoop* EventLoopThread::startLoop()
 {
     thread_.start();
@@ -35,10 +36,11 @@ EventLoop* EventLoopThread::startLoop()
         }
         loop = loop_;
     }
-
+    /*返回线程关联的loop*/
     return loop;
 }
 
+/*线程执行函数*/
 void EventLoopThread::threadFunc()
 {
     EventLoop loop;

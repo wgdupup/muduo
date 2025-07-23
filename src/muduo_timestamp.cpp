@@ -7,6 +7,7 @@ Timestamp::Timestamp(int64_t microSecondsSinceEpoch)
     : microSecondsSinceEpoch_(microSecondsSinceEpoch)
     {}
 
+/*获取当前时间*/
 Timestamp Timestamp::now()
 {
     return Timestamp(time(NULL));
